@@ -1,5 +1,8 @@
 package com.employee.dao;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.employee.pojo.*;
 import com.employee.util.*;
 public class EmployeeDao {
@@ -33,6 +36,26 @@ public class EmployeeDao {
             printSQLException(e);
         }
     }
+	public String getEmployeeContact(Employee emp) throws Exception{
+		Connection con = null;
+		try {
+			con = MySQLUtility.getConnection();
+			String result = null;
+			PreparedStatement ps = con.prepareStatement("select contact from employee where username=?");
+			ps.setString(1, "username");
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				result = rs.getString("contact");
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			con.close();
+		}
+
+	}
 
     private void printSQLException(SQLException ex) {
         for (Throwable e: ex) {
